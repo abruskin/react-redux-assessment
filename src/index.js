@@ -5,9 +5,10 @@ import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import user from './modules/userM';
+import tasks from './modules/taskM';
 import {Provider} from "react-redux";
 import logger from 'redux-logger';
-import {stringify} from 'flatted';
+
 
 const asyncMiddleware = storeAPI => next => action => {
     if(typeof action === 'function') {
@@ -17,7 +18,10 @@ const asyncMiddleware = storeAPI => next => action => {
 }
 
 const middlewareEnhancer = applyMiddleware(asyncMiddleware, logger)
-const rootReducer = combineReducers({user})
+const rootReducer = combineReducers({
+    user,
+    tasks
+})
 const store = createStore(rootReducer, middlewareEnhancer)
 
 ReactDOM.render(

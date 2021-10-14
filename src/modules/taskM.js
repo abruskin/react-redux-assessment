@@ -1,10 +1,10 @@
 //Actions
-import { getTasksByDate} from '../services/taskS';
+import { getTasksByDate } from '../services/taskS';
 import {requestCreateTask} from "../services/userS";
 
 const GETTASKS_REQUEST = 'task/GETTASKS_REQUEST'
 const GETTASKS_PASS = 'task/GETTASKS_PASS'
-const GETTASKS_FAIL = 'task/GETTASKS_FAILT'
+const GETTASKS_FAIL = 'task/GETTASKS_FAIL'
 
 // const CREATETASK_REQUEST = 'task/CREATETASK_REQUEST'
 // const CREATETASK_PASS = 'task/CREATETASK_PASS'
@@ -14,7 +14,7 @@ const GETTASKS_FAIL = 'task/GETTASKS_FAILT'
 const initialState={
     getTasksPending: false,
     getTasksFail: false,
-    task: [],
+    tasks: [],
     // createTaskPending: false,
     // createTaskFail: false
 }
@@ -33,7 +33,7 @@ export default function reducer(state=initialState, action) {
                 ...state,
                 getTasksPending: false,
                 getTasksFail: false,
-                task: action.task
+                tasks: action.tasks
             };
 
         case GETTASKS_FAIL:
@@ -83,9 +83,9 @@ export function getTasksRequest() {
     return {type:GETTASKS_REQUEST}
 }
 
-export function getTasksPass(task) {
-    return {type: GETTASKS_PASS}
-    task: task
+export function getTasksPass(tasks) {
+    console.log(tasks)
+    return {type: GETTASKS_PASS, tasks}
 }
 
 export function getTasksFail() {
@@ -108,19 +108,27 @@ export function getTasksFail() {
 //     }
 
 export function initiateGetTasksByDate() {
-    return function getTasksByDate(dispatch, getState) {
-        getTasksByDate(getState().user.token).then(response => {
+    console.log("initiateGetTasksByDate fired")
+    return function (dispatch, getState) {
+        console.log('here')
+        const tempState = getState()
+        // dispatch(getTasksRequest())
+        getTasksByDate(getState().user.token)
+            .then(response => {
+            console.log('here')
             if (!response.ok) {
                 dispatch(getTasksFail())
                 return
             }
             response.json().then(json => {
-                if (!json.task_list) {
+                if (!json.message) {
                     dispatch(getTasksFail())
-                    return
-                        dispatch(getTasksPass(json.task_list))
                 }
+
+                dispatch(getTasksPass(json.message))
+
             })
         })
     }
 }
+

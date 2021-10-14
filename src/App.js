@@ -4,8 +4,10 @@ import './App.css';
 import {connect} from 'react-redux';
 import {initiateLogin, initiateRegister, logout, registerFail} from "./modules/userM";
 import Header from "./components/Header";
-import Task from './components/Task';
+import {Tasks} from "./components/Task";
 import {getTasksByDate} from "./services/taskS";
+import { initiateGetTasksByDate } from "./modules/taskM";
+
 
 function App({
     dispatch,
@@ -13,7 +15,10 @@ function App({
     loginFail,
     token,
     registerPending,
-    registerFail
+    registerFail,
+    crit1,
+    crit2,
+
 }) {
 
   function handleLoginRequest(username, password) {
@@ -28,6 +33,10 @@ function App({
       dispatch(logout())
   }
 
+  function taco(crit1, crit2) {
+      dispatch(initiateGetTasksByDate())
+  }
+
       if (!token)
       return (
       <Login handleLoginRequest={handleLoginRequest}
@@ -39,13 +48,15 @@ function App({
           )
           return (
               <Container>
-              <Header handleLogoutRequest={() => dispatch(logout())}
-              handleGetTasksRequest={(crit1, crit2) => dispatch(getTasksByDate(crit1, crit2))}/>
+              <Header
+                  handleLogoutRequest={() => dispatch(logout())}
+                  initiateGetTasksByDate={initiateGetTasksByDate}
+                  />
 
-              <Row> <h2> Events </h2></Row>
+                  <Row> <h2> Events </h2></Row>
       <Row> <h2> Invites </h2> </Row>
 
-          <Task handleGetTasksByDate={() => dispatch(getTasksByDate())}/>
+          <Tasks handleGetTasksByDate={() => dispatch(getTasksByDate())}/>
 
           <Row> <h2> Reminders </h2> </Row>
 
@@ -56,7 +67,10 @@ function App({
 }
 
 function mapStateToProps(state) {
-    return {...state.user}
+    return {
+        ...state.user,
+        ...state.tasks
+    }
 }
 
 export default connect(mapStateToProps) (App);
