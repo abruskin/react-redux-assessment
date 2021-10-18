@@ -7,8 +7,8 @@ function Tasks({tasks, getTasksPending}) {
         <>
             {
                 tasks && !getTasksPending ?
-                    tasks.map((tasks, idx) => {
-                       return <> <Card key = {idx}>
+                    tasks.map((tasks, id) => {
+                       return <> <Card key = {id}>
                             <Card.Body>
                                 <Card.Subtitle> {tasks.timestamp} </Card.Subtitle>
                               <Card.Text>   {tasks.title} </Card.Text>

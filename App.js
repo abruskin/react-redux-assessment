@@ -9,6 +9,8 @@ import Tasks from "./components/Task";
 import {initiateGetEventsByDate} from "./modules/EventsM";
 import { initiateGetTasksByDate } from "./modules/taskM";
 import Events from "./components/Events";
+import {initiateGetRemindersByDate} from "./modules/remindersM";
+import Reminders from "./components/Reminders";
 
 function App({
     dispatch,
@@ -21,10 +23,14 @@ function App({
     getTasksPass,
     getTasksPending,
     getTasksFail,
-    events,
+    event,
     getEventsPass,
     getEventsPending,
-    getEventsFail
+    getEventsFail,
+    reminder,
+    getRemindersPass,
+    getRemindersPending,
+    getRemindersFail,
 
 
 }) {
@@ -40,10 +46,8 @@ function App({
   function handleLogoutRequest() {
       dispatch(logout())
   }
-    console.log(events)
-  // function taco(crit1, crit2) {
-  //     dispatch(initiateGetTasksByDate())
-  // }
+
+
 
       if (!token)
       return (
@@ -60,24 +64,30 @@ function App({
                   handleLogoutRequest={() => dispatch(logout())}
                  initiateGetTasksByDate={(crit1, crit2) => dispatch(initiateGetTasksByDate(crit1, crit2))}
                   initiateGetEventsbyDate={(crit1, crit2) => dispatch(initiateGetEventsByDate(crit1, crit2))}
+                  initiateGetRemindersByDate={(crit1, crit2) => dispatch(initiateGetRemindersByDate(crit1, crit2))}
                   />
 
-                  <Row> <h1> Events </h1></Row> <Events events={events}
+                  <Row> <h1> Events </h1> <Events event={event}
                                                         getEventsPending={getEventsPending}
                                                         getEventsPass={getEventsPass}
-                                                        getEventsFail={getEventsFail}
-              />
+                                                  getEventsFail={getEventsFail} /> </Row>
+
       <Row> <h2> Invites </h2> </Row>
 
 
-         <Row> <h1> Tasks  <Tasks tasks={tasks}
+                  <Row> <h1> Tasks </h1> <Tasks tasks={tasks}
           getTasksPending={getTasksPending}
           getTasksPass={getTasksPass}
                  getTasksFail={getTasksFail}
-          /> </h1></Row>
+          /> </Row>
 
 
-          <Row> <h2> Reminders </h2> </Row>
+          <Row> <h2> Reminders </h2> <Reminders
+              reminder={reminder}
+              getRemindersPending={getRemindersPending}
+              getRemindersPass={getRemindersPass}
+              getRemindersFail={getRemindersFail} />
+          </Row>
 
           </Container> )
 
@@ -88,7 +98,9 @@ function App({
 function mapStateToProps(state) {
     return {
         ...state.user,
-        ...state.tasks
+        ...state.tasks,
+        ...state.event,
+        ...state.reminder,
     }
 }
 

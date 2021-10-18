@@ -6,8 +6,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import user from './modules/userM';
 import tasks from './modules/taskM';
+import event from './modules/EventsM';
 import {Provider} from "react-redux";
 import logger from 'redux-logger';
+import reminder from './modules/remindersM';
 
 
 const asyncMiddleware = storeAPI => next => action => {
@@ -20,7 +22,9 @@ const asyncMiddleware = storeAPI => next => action => {
 const middlewareEnhancer = applyMiddleware(asyncMiddleware, logger)
 const rootReducer = combineReducers({
     user,
-    tasks
+    tasks,
+    event,
+    reminder,
 })
 const store = createStore(rootReducer, middlewareEnhancer)
 

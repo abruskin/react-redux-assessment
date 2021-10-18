@@ -33,7 +33,7 @@ export default function reducer(state=initialState, action) {
                 ...state,
                 getEventsPending: false,
                 getEventsFail: false,
-                events: action.events
+                event: action.event
             };
 
         case GETEVENTS_FAIL:
@@ -83,9 +83,9 @@ export function getEventsRequest() {
     return {type:GETEVENTS_REQUEST}
 }
 
-export function getEventsPass(events) {
-     console.log(events)
-    return {type: GETEVENTS_PASS, events}
+export function getEventsPass(event) {
+     console.log(event)
+    return {type: GETEVENTS_PASS, event}
 }
 
 export function getEventsFail() {
