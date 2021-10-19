@@ -1,18 +1,22 @@
 //Actions
-import {getRemindersByDate} from '../services/remindersS';
+import {createReminder, getRemindersByDate} from '../services/remindersS';
 
 
 const GETREMINDERS_REQUEST = 'task/GETREMINDERS_REQUEST'
 const GETREMINDERS_PASS = 'task/GETREMINDERS_PASS'
 const GETREMINDERS_FAIL = 'task/GETREMINDERS_FAIL'
 
-
+const CREATEREMINDER_REQUEST = 'reminder/CREATEREMINDER_REQUEST'
+const CREATEREMINDER_PASS = 'reminder/CREATEREMINDER_PASS'
+const CREATEREMINDER_FAIL = 'reminder/CREATEREMINDER_FAIL'
 
 //Reducer
 const initialState={
     getRemindersPending: false,
     getRemindersFail: false,
     reminders: [],
+    createReminderPending: false,
+    createReminderFail: false
 
 }
 
@@ -40,6 +44,25 @@ export default function reducer(state=initialState, action) {
                 getRemindersFail: true
             };
 
+        case CREATEREMINDER_REQUEST:
+            return{
+                ...state,
+                createReminderPending: true
+            }
+
+        case CREATEREMINDER_FAIL:
+            return{
+                ...state,
+                createReminderPending: false,
+                createReminderFail: true
+            }
+
+        case CREATEREMINDER_PASS:
+            return{
+                ...state,
+                createReminderPending: false,
+                createReminderFail: false
+            }
         default:
             return state
     }}
@@ -58,8 +81,18 @@ export function getRemindersFail() {
     return {type: GETREMINDERS_FAIL}
 }
 
-//Side Effects
+export function createReminderRequest() {
+    return {type: CREATEREMINDER_REQUEST}
+}
 
+export function createReminderPass() {
+    return {type: CREATEREMINDER_PASS}
+}
+
+export function createReminderFail() {
+    return {type: CREATEREMINDER_FAIL}
+}
+//Side Effects
 
 export function initiateGetRemindersByDate(crit1, crit2) {
     console.log('here')
@@ -92,5 +125,33 @@ export function initiateGetRemindersByDate(crit1, crit2) {
             })
     }
 }
+
+export function initiateCreateReminder(newReminder) {
+    return function (dispatch, getState) {
+        console.log('here')
+        dispatch(createReminderRequest())
+        createReminder(getState().user.token, newReminder).then(response => {
+                if(!response.ok) {
+                    console.log('here')
+                    dispatch(createReminderFail())
+                    return
+                }
+                response.json().then(json => {
+                    if(!json.message) {
+                        console.log('here')
+                        dispatch(createReminderFail())
+                        return
+                    }
+                    if (json.message !== 'reminder created') {
+                        dispatch(createReminderFail())
+                        console.log('here')
+                        return;
+                    }
+                    dispatch(createReminderPass())
+                    console.log('here')
+                }, () => dispatch(createReminderFail()))
+            }, () => dispatch(createReminderFail())
+        )
+    }}
 
 

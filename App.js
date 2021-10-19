@@ -8,7 +8,7 @@ import Tasks from "./components/Task";
 import {initiateGetEventsByDate} from "./modules/EventsM";
 import { initiateCreateTask, initiateGetTasksByDate} from "./modules/taskM";
 import Events from "./components/Events";
-import {initiateGetRemindersByDate} from "./modules/remindersM";
+import {initiateCreateReminder, initiateGetRemindersByDate} from "./modules/remindersM";
 import Reminders from "./components/Reminders";
 
 
@@ -36,6 +36,10 @@ function App({
     createTaskPass,
     createTaskPending,
     createTaskFail,
+newReminder,
+    createReminderPass,
+    createReminderPending,
+    createReminderFail,
 
 
 
@@ -99,11 +103,15 @@ function App({
             /> </Row>
 
 
-            <Row><h2> Reminders </h2> <Reminders
+            <Row> <Reminders
                 reminder={reminder}
                 getRemindersPending={getRemindersPending}
                 getRemindersPass={getRemindersPass}
-                getRemindersFail={getRemindersFail}/>
+                getRemindersFail={getRemindersFail}
+            createReminderPending={createReminderPending}
+            createReminderPass={createReminderPass}
+            createReminderFail={createReminderFail}
+            initiateCreateReminder={(newReminder) => dispatch(initiateCreateReminder(newReminder))}/>
             </Row>
 
         </Container>)
