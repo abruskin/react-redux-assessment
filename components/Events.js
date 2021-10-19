@@ -1,17 +1,17 @@
 import {Button, Row, Col, Card, Placeholder, Modal, Form, Badge} from 'react-bootstrap'
 
 
-function Events({event, getEventsPending}) {
-    console.log(event)
+function Events({item, getEventsPending}) {
+    console.log(item)
     return (
         <>
             {
-                event && !getEventsPending ?
-                    event.map((events, id) => {
+                item && !getEventsPending ?
+                    item.map((item, id) => {
                         return <> <Card key={id}>
                             <Card.Body>
-                                <Card.Subtitle> {events.start_timestamp} - {events.end_timestamp} </Card.Subtitle>
-                                <Card.Text>   {events.title} </Card.Text>
+                                <Card.Subtitle> {item.start_timestamp} - {item.end_timestamp} </Card.Subtitle>
+                                <Card.Text>   {item.title} </Card.Text>
                             </Card.Body>
                         </Card> </>
                     })

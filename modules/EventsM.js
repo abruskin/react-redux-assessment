@@ -14,7 +14,7 @@ const GETEVENTS_FAIL = 'task/GETEVENTS_FAIL'
 const initialState={
     getEventsPending: false,
     getEventsFail: false,
-    events: [],
+    item: [],
     // createTaskPending: false,
     // createTaskFail: false
 }
@@ -33,7 +33,7 @@ export default function reducer(state=initialState, action) {
                 ...state,
                 getEventsPending: false,
                 getEventsFail: false,
-                event: action.event
+                item: action.item
             };
 
         case GETEVENTS_FAIL:
@@ -83,9 +83,9 @@ export function getEventsRequest() {
     return {type:GETEVENTS_REQUEST}
 }
 
-export function getEventsPass(event) {
-     console.log(event)
-    return {type: GETEVENTS_PASS, event}
+export function getEventsPass(item) {
+     console.log(item)
+    return {type: GETEVENTS_PASS, item}
 }
 
 export function getEventsFail() {
